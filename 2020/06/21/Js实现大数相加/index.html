@@ -6,14 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://drizzle-zl/github.io">
-  <title>Archives: 2020/6 | Drizzle&#39;s blog</title>
+  <title>Js实现大数相加 | Drizzle&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Drizzle&#39;s blog">
-<meta property="og:url" content="http://drizzle-zl/github.io/archives/2020/06/index.html">
+  <meta name="description" content="题目：实现一个函数，完成超过范围的两个大整数相加 思路：将字符串转为数组，然后每个字符串按位相加，需要设置一个变量保留进位 1234567891011121314151617function bigNumberAdd(num1,num2)&amp;#123;    let result &#x3D; &quot;&quot;,        carry &#x3D; false;    &#x2F;&#x2F; 将数字转为数组    num1 &#x3D; num1.spl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js实现大数相加">
+<meta property="og:url" content="http://drizzle-zl/github.io/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/index.html">
 <meta property="og:site_name" content="Drizzle&#39;s blog">
+<meta property="og:description" content="题目：实现一个函数，完成超过范围的两个大整数相加 思路：将字符串转为数组，然后每个字符串按位相加，需要设置一个变量保留进位 1234567891011121314151617function bigNumberAdd(num1,num2)&amp;#123;    let result &#x3D; &quot;&quot;,        carry &#x3D; false;    &#x2F;&#x2F; 将数字转为数组    num1 &#x3D; num1.spl">
+<meta property="og:image" content="https://img-blog.csdn.net/20180425150235344">
+<meta property="article:published_time" content="2020-06-21T04:15:47.195Z">
+<meta property="article:modified_time" content="2020-06-21T04:37:11.192Z">
 <meta property="article:author" content="Drizzle">
+<meta property="article:tag" content="前端笔试题">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180425150235344">
   
     <link rel="alternative" href="/atom.xml" title="Drizzle&#39;s blog" type="application/atom+xml">
   
@@ -131,36 +138,69 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Js实现大数相加" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="archive-article-date">
-  	<time datetime="2020-06-21T04:15:47.195Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/">Js实现大数相加</a>
+    <h1 class="article-title" itemprop="name">
+      Js实现大数相加
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="archive-article-date">
+  	<time datetime="2020-06-21T04:15:47.195Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>题目：实现一个函数，完成超过范围的两个大整数相加</p>
+<p>思路：将字符串转为数组，然后每个字符串按位相加，需要设置一个变量保留进位</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bigNumberAdd</span>(<span class="params">num1,num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="string">""</span>,</span><br><span class="line">        carry = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 将数字转为数组</span></span><br><span class="line">    num1 = num1.split(<span class="string">""</span>);</span><br><span class="line">    num2 = num2.split(<span class="string">""</span>);</span><br><span class="line">    <span class="comment">// 当数组的长度都变为0，并且最终不再进位时，结束循环</span></span><br><span class="line">    <span class="keyword">while</span>(num1.length || num2.length || carry)&#123;</span><br><span class="line">        <span class="comment">// 每次将最后的数字进行相加，使用~~的好处是，即使返回值为 undefined 也能转换为 0</span></span><br><span class="line">        <span class="comment">// true 和 false 会在加法中转为1</span></span><br><span class="line">        carry += ~~num1.pop() + ~~num2.pop();</span><br><span class="line">        <span class="comment">// 将每次的个位数拼接在原来结果的前面</span></span><br><span class="line">        result = carry % <span class="number">10</span> + result;</span><br><span class="line">        carry = carry &gt; <span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拓展：</p>
+<ul>
+<li><p>JavaScript 能表示的最大安全整数是 9007199254740991，可以使用API<code>Number.MAX_INTEGER</code>查看</p>
+</li>
+<li><p>超出范围会发生精度丢失</p>
+<p><img src="https://img-blog.csdn.net/20180425150235344" alt="精度丢失示例"></p>
+</li>
+<li><p><code>~</code> 运算符表示按位取反，<code>~~</code>常用来取整，带有字母的字符串，转为0；其他类型的会先转为Boolean类型，再按<code>true=1, false=0</code>进行转化</p>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -172,57 +212,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://drizzle-zl/github.io/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2020-06-21T04:04:55.002Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">懒加载的原理及实现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/">懒加载的原理及实现</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">实习日记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -245,8 +334,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -133,6 +133,93 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Js实现大数相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/">Js实现大数相加</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="archive-article-date">
+  	<time datetime="2020-06-21T04:15:47.195Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>题目：实现一个函数，完成超过范围的两个大整数相加</p>
+<p>思路：将字符串转为数组，然后每个字符串按位相加，需要设置一个变量保留进位</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bigNumberAdd</span>(<span class="params">num1,num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="string">""</span>,</span><br><span class="line">        carry = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 将数字转为数组</span></span><br><span class="line">    num1 = num1.split(<span class="string">""</span>);</span><br><span class="line">    num2 = num2.split(<span class="string">""</span>);</span><br><span class="line">    <span class="comment">// 当数组的长度都变为0，并且最终不再进位时，结束循环</span></span><br><span class="line">    <span class="keyword">while</span>(num1.length || num2.length || carry)&#123;</span><br><span class="line">        <span class="comment">// 每次将最后的数字进行相加，使用~~的好处是，即使返回值为 undefined 也能转换为 0</span></span><br><span class="line">        <span class="comment">// true 和 false 会在加法中转为1</span></span><br><span class="line">        carry += ~~num1.pop() + ~~num2.pop();</span><br><span class="line">        <span class="comment">// 将每次的个位数拼接在原来结果的前面</span></span><br><span class="line">        result = carry % <span class="number">10</span> + result;</span><br><span class="line">        carry = carry &gt; <span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拓展：</p>
+<ul>
+<li><p>JavaScript 能表示的最大安全整数是 9007199254740991，可以使用API<code>Number.MAX_INTEGER</code>查看</p>
+</li>
+<li><p>超出范围会发生精度丢失</p>
+<p><img src="https://img-blog.csdn.net/20180425150235344" alt="精度丢失示例"></p>
+</li>
+<li><p><code>~</code> 运算符表示按位取反，<code>~~</code>常用来取整，带有字母的字符串，转为0；其他类型的会先转为Boolean类型，再按<code>true=1, false=0</code>进行转化</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">前端笔试题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/21/Js%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E7%9B%B8%E5%8A%A0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-图片懒加载的原理及实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -388,6 +475,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">实习日记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">前端笔试题</a>
               </li>
             
             <div class="clearfix"></div>
