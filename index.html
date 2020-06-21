@@ -5,12 +5,12 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://drizzlescode.gitee.io">
+  <link rel="dns-prefetch" href="http://drizzle-zl/github.io">
   <title>Drizzle&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Drizzle&#39;s blog">
-<meta property="og:url" content="http://drizzlescode.gitee.io/index.html">
+<meta property="og:url" content="http://drizzle-zl/github.io/index.html">
 <meta property="og:site_name" content="Drizzle&#39;s blog">
 <meta property="article:author" content="Drizzle">
 <meta name="twitter:card" content="summary">
@@ -132,6 +132,81 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-图片懒加载的原理及实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/">图片懒加载的原理及实现</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2020-06-21T04:04:55.002Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="懒加载的原理"><a href="#懒加载的原理" class="headerlink" title="懒加载的原理"></a>懒加载的原理</h2><ul>
+<li>图片的加载需要耗费许多服务器资源，当图片过多时，会造成页面加载缓慢。</li>
+<li>解决方法：只加载目前可视区域内的图片，对于尚未可见的图片先不做加载，当图片滚动到可视区域时再进行加载，即懒加载。</li>
+<li>实现方法：将<code>&lt;img&gt;</code>标签的<code>src</code>属性指向小图片或置空，然后定义一个属性如<code>data-src</code>指向真正的图片地址。（图片要设置宽高）监听滚动事件，当图片进入可视区域的时候，将<code>data-src</code>赋值给<code>src</code>，加载图片，这样就实现了懒加载。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>关于<code>scrollTop,offsetTop,scrollLeft,offsetLeft</code>用法介绍</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">页可见区域宽： <span class="built_in">document</span>.body.clientWidth;</span><br><span class="line">网页可见区域高： <span class="built_in">document</span>.body.clientHeight;</span><br><span class="line">网页可见区域宽： <span class="built_in">document</span>.body.offsetWidth (包括边线的宽);</span><br><span class="line">网页可见区域高： <span class="built_in">document</span>.body.offsetHeight (包括边线的宽);</span><br><span class="line">网页正文全文宽： <span class="built_in">document</span>.body.scrollWidth;</span><br><span class="line">网页正文全文高： <span class="built_in">document</span>.body.scrollHeight;</span><br><span class="line">网页被卷去的高： <span class="built_in">document</span>.body.scrollTop;</span><br><span class="line">网页被卷去的左： <span class="built_in">document</span>.body.scrollLeft;</span><br><span class="line">网页正文部分上： <span class="built_in">window</span>.screenTop;</span><br><span class="line">网页正文部分左： <span class="built_in">window</span>.screenLeft;</span><br><span class="line">屏幕分辨率的高： <span class="built_in">window</span>.screen.height;</span><br><span class="line">屏幕分辨率的宽： <span class="built_in">window</span>.screen.width;</span><br><span class="line">屏幕可用工作区高度： <span class="built_in">window</span>.screen.availHeight;</span><br><span class="line"></span><br><span class="line">div.width = div.offsetWidth<span class="comment">//会越来越宽，而且还会触发回流</span></span><br></pre></td></tr></table></figure>
+
+<p>懒加载代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Lazyload&lt;&#x2F;title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .image-item &#123;</span><br><span class="line">            display: block;</span><br><span class="line">            margin-bottom: 50px;</span><br><span class="line">            height: 200px;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;&#x2F;style&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;&quot; class&#x3D;&quot;image-item&quot; lazyload&#x3D;&quot;true&quot; data-original&#x3D;&quot;images&#x2F;1.png&quot; &#x2F;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;&quot; class&#x3D;&quot;image-item&quot; lazyload&#x3D;&quot;true&quot; data-original&#x3D;&quot;images&#x2F;2.png&quot; &#x2F;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;&quot; class&#x3D;&quot;image-item&quot; lazyload&#x3D;&quot;true&quot; data-original&#x3D;&quot;images&#x2F;3.png&quot; &#x2F;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;&quot; class&#x3D;&quot;image-item&quot; lazyload&#x3D;&quot;true&quot; data-original&#x3D;&quot;images&#x2F;4.png&quot; &#x2F;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;&quot; class&#x3D;&quot;image-item&quot; lazyload&#x3D;&quot;true&quot; data-original&#x3D;&quot;images&#x2F;5.png&quot; &#x2F;&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        var viewHeight &#x3D; document.documentElement.clientHeight &#x2F;&#x2F;获取可视区高度</span><br><span class="line">        function lazyload() &#123;</span><br><span class="line">            var eles &#x3D; document.querySelectorAll(&#39;img[data-original][lazyload]&#39;)</span><br><span class="line">            Array.prototype.forEach.call(eles, function (item, index) &#123;</span><br><span class="line">                var rect</span><br><span class="line">                if (item.dataset.original &#x3D;&#x3D;&#x3D; &quot;&quot;)</span><br><span class="line">                    return</span><br><span class="line">                rect &#x3D; item.getBoundingClientRect() &#x2F;&#x2F; 用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置</span><br><span class="line">                if (rect.bottom &gt;&#x3D; 0 &amp;&amp; rect.top &lt; viewHeight) &#123;&#x2F;&#x2F;在窗口内则加载</span><br><span class="line">                    ! function () &#123;</span><br><span class="line">                        var img &#x3D; new Image()</span><br><span class="line">                        img.src &#x3D; item.dataset.original</span><br><span class="line">                        img.onload &#x3D; function () &#123;</span><br><span class="line">                            item.src &#x3D; img.src</span><br><span class="line">                        &#125;</span><br><span class="line">                        item.removeAttribute(&quot;data-original&quot;) &#x2F;&#x2F;移除属性，下次不再遍历</span><br><span class="line">                        item.removeAttribute(&quot;lazyload&quot;)</span><br><span class="line">                    &#125;()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        lazyload() &#x2F;&#x2F;刚开始还没滚动屏幕时，要先触发一次函数，初始化首页的页面图片</span><br><span class="line">        document.addEventListener(&quot;scroll&quot;, lazyload)&#x2F;&#x2F;这一步可以用节流函数进行性能优化</span><br><span class="line">        &#x2F;&#x2F;节流函数</span><br><span class="line">        function throttle(fun, delay, time) &#123;</span><br><span class="line">            var timeout,</span><br><span class="line">                startTime &#x3D; new Date();</span><br><span class="line"></span><br><span class="line">            return function() &#123;</span><br><span class="line">                var context &#x3D; this,</span><br><span class="line">                    args &#x3D; arguments,</span><br><span class="line">                    curTime &#x3D; new Date();</span><br><span class="line"></span><br><span class="line">                clearTimeout(timeout);</span><br><span class="line">                &#x2F;&#x2F; 如果达到了规定的触发时间间隔，触发 handler</span><br><span class="line">                if (curTime - startTime &gt;&#x3D; time) &#123;</span><br><span class="line">                    fun.apply(context, args);</span><br><span class="line">                    startTime &#x3D; curTime;</span><br><span class="line">                    &#x2F;&#x2F; 没达到触发间隔，重新设定定时器</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    timeout &#x3D; setTimeout(fun, delay);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;;</span><br><span class="line">		document.addEventListener(&quot;scroll&quot;,throttle(lazyload,500,1000))</span><br><span class="line">    &lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/21/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
