@@ -133,6 +133,97 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-组合数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/10/%E7%BB%84%E5%90%88%E6%95%B0/">组合数求和</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/10/%E7%BB%84%E5%90%88%E6%95%B0/" class="archive-article-date">
+  	<time datetime="2020-09-10T06:37:17.729Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>题目来源：LeetCode39、LeetCode40</p>
+</blockquote>
+<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C39%E9%A2%98.png" alt="39题题干"></p>
+<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C40%E9%A2%98.png" alt="40题题干"></p>
+<p>两道题目的解题思路类似，都是回溯+剪枝。区别在于第二道题不能包含相同的结果，虽然每个数字只能使用一次，但是数字可能重复，所以第二道题目需要进行去重。</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p><strong>回溯</strong>：回溯首先要把问题转为树形结构，才有所谓的回溯。在本题中，可以把目标值作为根节点，子节点为减去目标数组中的值后剩下的值。示意图如下，这是构建树的第一步，之后重复进行此步骤，将满足条件的路径加入结果。</p>
+<blockquote>
+<p>注意：第一道题数字可以重复使用，第二道数字不可重复使用</p>
+</blockquote>
+<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C%E6%A0%91%E5%BD%A2%E5%9B%BE.png" alt="树形图"></p>
+<p><strong>剪枝</strong>：两道题目共同的剪枝点，就是当前节点的值小于要减去的数组的值（<code>candidate[i]</code>），则剪去当前的分支。</p>
+<p>另外第二道题目需要对相同数字进行剪枝，以确保结果没有重复。思路是对节点加一个判断，如果<code>candidate[i]=candidate[i-1]</code>，那么说明这个数字与前面的重复，则剪去当前分支。</p>
+<p><strong>优化点</strong>：对数组进行排序，可以先减去小的数字，若小的数字已经超出目标值范围，那么后续大的数字就无需再次加入路径。排序也是第二题剪枝的必要条件。</p>
+<h3 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 39题代码</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;number[]&#125;</span> <span class="variable">candidates</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;number&#125;</span> <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;number[][]&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> combinationSum = <span class="function"><span class="keyword">function</span>(<span class="params">candidates, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> len = candidates.length</span><br><span class="line">    <span class="keyword">if</span>(len === <span class="number">0</span>) <span class="keyword">return</span> []</span><br><span class="line">    <span class="keyword">let</span> res = []</span><br><span class="line">    candidates.sort(<span class="function">(<span class="params">a,b</span>) =&gt;</span> a-b)</span><br><span class="line">    dfs(candidates, len, <span class="number">0</span>, target, [])</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">candidates, len, begin, target, path</span>) </span>&#123;<span class="comment">// (数组，数组长度，开始下标，目标数，路径)</span></span><br><span class="line">        <span class="keyword">if</span>(target === <span class="number">0</span>)&#123;<span class="comment">// 满足条件，加入结果</span></span><br><span class="line">            <span class="comment">// 注意，js中多次调用一个函数，函数中变量的数字会被共享，所以这里需要使用新的变量空间来存储</span></span><br><span class="line">            res.push([...path])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=begin; i&lt;len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(target &lt; candidates[i])&#123;<span class="comment">// 剪枝</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            path.push(candidates[i])</span><br><span class="line">            dfs(candidates, len, i, target-candidates[i], path)<span class="comment">// 数字可以重复使用，所以还是可以从i开始</span></span><br><span class="line">            path.pop()<span class="comment">// 回溯，将当前验证过的路径出队</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 40题代码</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;number[]&#125;</span> <span class="variable">candidates</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;number&#125;</span> <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;number[][]&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> combinationSum2 = <span class="function"><span class="keyword">function</span>(<span class="params">candidates, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> len = candidates.length</span><br><span class="line">    <span class="keyword">let</span> res = []</span><br><span class="line">    <span class="keyword">if</span>(len === <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    candidates.sort(<span class="function">(<span class="params">a,b</span>)=&gt;</span> a-b)</span><br><span class="line">    dfs(candidates, len, <span class="number">0</span>, target, [])</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">candidates, len, begin, target, path</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(target == <span class="number">0</span>)&#123;</span><br><span class="line">            res.push([...path])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = begin; i&lt;len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(target - candidates[i] &lt; <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i &gt; begin &amp;&amp; candidates[i] === candidates[i<span class="number">-1</span>])&#123;<span class="comment">// 多了一步剪枝，去掉重复的数字</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            path.push(candidates[i])</span><br><span class="line">            dfs(candidates, len, i+<span class="number">1</span>, target-candidates[i], path)<span class="comment">// 数字不可重复使用，从当前的下一个开始</span></span><br><span class="line">            path.pop()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">刷题笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/10/%E7%BB%84%E5%90%88%E6%95%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Vue.js 3.0优化概览" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -604,6 +695,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Vue3.0 源码笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">刷题笔记</a>
               </li>
             
             <div class="clearfix"></div>
