@@ -14,15 +14,15 @@
 <meta property="og:url" content="http://drizzle-zl/github.io/2020/09/10/%E7%BB%84%E5%90%88%E6%95%B0/index.html">
 <meta property="og:site_name" content="Drizzle&#39;s blog">
 <meta property="og:description" content="题目来源：LeetCode39、LeetCode40    两道题目的解题思路类似，都是回溯+剪枝。区别在于第二道题不能包含相同的结果，虽然每个数字只能使用一次，但是数字可能重复，所以第二道题目需要进行去重。 解题思路回溯：回溯首先要把问题转为树形结构，才有所谓的回溯。在本题中，可以把目标值作为根节点，子节点为减去目标数组中的值后剩下的值。示意图如下，这是构建树的第一步，之后重复进行此步骤，将满">
-<meta property="og:image" content="d:%5Chexo%5Cblog%5Csource_posts%5C39%E9%A2%98.png">
-<meta property="og:image" content="d:%5Chexo%5Cblog%5Csource_posts%5C40%E9%A2%98.png">
-<meta property="og:image" content="d:%5Chexo%5Cblog%5Csource_posts%5C%E6%A0%91%E5%BD%A2%E5%9B%BE.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200910154156933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200910154156930.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200910154156929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center">
 <meta property="article:published_time" content="2020-09-10T06:37:17.729Z">
-<meta property="article:modified_time" content="2020-09-10T07:18:40.182Z">
+<meta property="article:modified_time" content="2020-09-10T07:46:21.278Z">
 <meta property="article:author" content="Drizzle">
 <meta property="article:tag" content="刷题笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:%5Chexo%5Cblog%5Csource_posts%5C39%E9%A2%98.png">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200910154156933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center">
   
     <link rel="alternative" href="/atom.xml" title="Drizzle&#39;s blog" type="application/atom+xml">
   
@@ -163,14 +163,14 @@
         <blockquote>
 <p>题目来源：LeetCode39、LeetCode40</p>
 </blockquote>
-<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C39%E9%A2%98.png" alt="39题题干"></p>
-<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C40%E9%A2%98.png" alt="40题题干"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200910154156933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center" alt="39题题干"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200910154156930.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center" alt="40题题干"></p>
 <p>两道题目的解题思路类似，都是回溯+剪枝。区别在于第二道题不能包含相同的结果，虽然每个数字只能使用一次，但是数字可能重复，所以第二道题目需要进行去重。</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p><strong>回溯</strong>：回溯首先要把问题转为树形结构，才有所谓的回溯。在本题中，可以把目标值作为根节点，子节点为减去目标数组中的值后剩下的值。示意图如下，这是构建树的第一步，之后重复进行此步骤，将满足条件的路径加入结果。</p>
 <blockquote>
 <p>注意：第一道题数字可以重复使用，第二道数字不可重复使用</p>
 </blockquote>
-<p><img src="D:%5Chexo%5Cblog%5Csource_posts%5C%E6%A0%91%E5%BD%A2%E5%9B%BE.png" alt="树形图"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200910154156929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDQzNTY3Mw==,size_16,color_FFFFFF,t_70#pic_center" alt="树形图"></p>
 <p><strong>剪枝</strong>：两道题目共同的剪枝点，就是当前节点的值小于要减去的数组的值（<code>candidate[i]</code>），则剪去当前的分支。</p>
 <p>另外第二道题目需要对相同数字进行剪枝，以确保结果没有重复。思路是对节点加一个判断，如果<code>candidate[i]=candidate[i-1]</code>，那么说明这个数字与前面的重复，则剪去当前分支。</p>
 <p><strong>优化点</strong>：对数组进行排序，可以先减去小的数字，若小的数字已经超出目标值范围，那么后续大的数字就无需再次加入路径。排序也是第二题剪枝的必要条件。</p>
